@@ -88,31 +88,19 @@ pip freeze > requirements.txt
 python -V > runtime.txt
 ```
 
-## ver carateristicas del sistema operativo
-
-```shell
-neofetch
-```
-
-## Crear el archivo os.txt
-
-```shell
-uname -a > os.txt
-```
-
 ## Crear el archivo .gitignore
 
 ```
-_pycache_/
+__pycache__/
 *.pyc
-smm/
 venv/
+.env
 ```
 
 # Iniciar la ejecucion del proyecto 
 
 ```shell
-uvicorn app:app --reload
+python3 app.py
 ```
 
 # NOTAS:
