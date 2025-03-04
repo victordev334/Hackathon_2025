@@ -1,7 +1,6 @@
-{% extends "master.html" %}
+% rebase("master.html")
 
-{% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<link rel="stylesheet" href="/static/css/login.css">
 
 <div class="login-container">
     <h2 class="login-titulo">Iniciar Sesión</h2>
@@ -47,5 +46,4 @@
     <span class="notification-message"></span>
 </div>
 
-<script src="{{ url_for('static', filename='js/login.js') }}"></script>
-{% endblock %}
+<script src="/static/js/login.js"></script>
