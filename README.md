@@ -46,12 +46,6 @@ deactivate
 pip install -r requirements.txt
 ```
 
-## Instalar NeoFetch
-
-```shell
-sudo apt-get neofetch -y
-```
-
 ## Actualizar Pip
 
 ```shell
@@ -63,10 +57,10 @@ pip install --upgrade pip
 sudo apt-get update
 ```
 
-## Para este proyecto se usaran las librerias de [FastAPI](https://fastapi.tiangolo.com/#typer-the-fastapi-of-clis)
+## Para este proyecto se usaran las librerias de [WEBPY](https://webpy.org/)
 
 ```shell
-pip install "fastapi[standard]"
+pip install web.py
 ```
 
 ## Para conexión a la base de datos de [supabase](https://supabase.com/)
