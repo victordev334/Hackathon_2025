@@ -1,30 +1,32 @@
 # controllers/login.py
 import web
+import json
 from models.login import UsuarioModel
-
-# Se asume que tus vistas se encuentran en la carpeta 'views'
-render = web.template.render('views', base='master')
 
 class Login:
     def GET(self):
-        # Muestra el formulario de login (archivo login.html)
-        return render.login()
+        return web.template.render('views', base='master').login()
 
     def POST(self):
-        # Recoge los datos enviados desde el formulario
-        data = web.input()
-        username = data.get('username')
-        password = data.get('password')
-        
-        usuario_model = UsuarioModel()
-        user = usuario_model.login(username, password)
-        usuario_model.close_connection()
+        try:
+            # Leer los datos JSON enviados desde JavaScript
+            data = json.loads(web.data().decode('utf-8'))
+            username = data.get("username").strip().lower()
+            password = data.get("password")
 
-        if user:
-            # Si el usuario se autentica correctamente, se muestra un mensaje de bienvenida.
-            # En una aplicación real se debería iniciar una sesión, establecer cookies, etc.
-            mensaje = "Login exitoso, bienvenido {0} {1}".format(user[1], user[2])
-            return render.index(message=mensaje)
-        else:
-            # Si falla la autenticación se recarga el formulario mostrando un error.
-            return render.login(error="Credenciales inválidas, inténtalo de nuevo.")
+            print(f"📌 Intentando iniciar sesión con: {username}")
+
+            usuario_model = UsuarioModel()
+            user = usuario_model.login(username, password)
+            usuario_model.close_connection()
+
+            if user:
+                print(f"✅ Usuario autenticado: {user[1]}")
+                return json.dumps({"success": True, "message": "Inicio de sesión exitoso", "user": user[1]})
+            else:
+                print("❌ Credenciales incorrectas")
+                return json.dumps({"success": False, "error": "Credenciales incorrectas"})
+
+        except Exception as e:
+            print("❌ ERROR en login:", str(e))
+            return json.dumps({"success": False, "error": "Error en el servidor"})
