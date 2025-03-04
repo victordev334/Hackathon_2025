@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Grooming Awareness</title>
+    <link rel="stylesheet" href="/static/css/registro.css">
+</head>
+<body>
+    <div class="registro-container">
+        <h2 class="registro-titulo">Registro de Usuario</h2>
+        <form id="formularioRegistro">
+            <div class="formulario-grupo">
+                <label for="username" class="formulario-label">Nombre de Usuario</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="formulario-input" 
+                    required 
+                    placeholder="Elige un nombre de usuario"
+                >
+            </div>
+
+            <div class="formulario-grupo">
+                <label for="nombre" class="formulario-label">Nombre</label>
+                <input 
+                    type="text" 
+                    id="nombre" 
+                    name="nombre" 
+                    class="formulario-input" 
+                    required 
+                    placeholder="Ingresa tu nombre"
+                >
+            </div>
+
+            <div class="formulario-grupo">
+                <label for="primerApellido" class="formulario-label">Primer Apellido</label>
+                <input 
+                    type="text" 
+                    id="primerApellido" 
+                    name="primerApellido" 
+                    class="formulario-input" 
+                    required 
+                    placeholder="Primer apellido"
+                >
+            </div>
+
+            <div class="formulario-grupo">
+                <label for="segundoApellido" class="formulario-label">Segundo Apellido</label>
+                <input 
+                    type="text" 
+                    id="segundoApellido" 
+                    name="segundoApellido" 
+                    class="formulario-input" 
+                    placeholder="Segundo apellido (opcional)"
+                >
+            </div>
+
+            <div class="formulario-grupo">
+                <label for="correo" class="formulario-label">Correo Electrónico</label>
+                <input 
+                    type="email" 
+                    id="correo" 
+                    name="correo" 
+                    class="formulario-input" 
+                    required 
+                    placeholder="ejemplo@correo.com"
+                >
+            </div>
+
+            <button type="submit" class="boton-registro">
+                Registrarse
+            </button>
+        </form>
+    </div>
+
+    <!-- Contenedor de Notificación -->
+    <div id="notification">
+        <span class="notification-icon">✓</span>
+        <span class="notification-message"></span>
+    </div>
+    <script src="/static/js/registro.js"></script>
+</body>
+</html>

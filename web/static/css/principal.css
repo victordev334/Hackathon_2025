@@ -1,272 +1,4 @@
 body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
-    animation: gradientBackground 10s ease infinite;
-    background-size: 200% 200%;
-}
-
-@keyframes gradientBackground {
-    0% {
-        background-position: 0% 50%;
-        background-image: linear-gradient(135deg, #f4f4f4 0%, #e9e9e9 50%, #f4f4f4 100%);
-    }
-    50% {
-        background-position: 100% 50%;
-        background-image: linear-gradient(135deg, #e9e9e9 0%, #f4f4f4 50%, #e9e9e9 100%);
-    }
-    100% {
-        background-position: 0% 50%;
-        background-image: linear-gradient(135deg, #f4f4f4 0%, #e9e9e9 50%, #f4f4f4 100%);
-    }
-}
-
-header {
-    background-color: #3498db;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    animation: dynamicHeader 2s ease-in-out infinite alternate;
-    position: relative;
-    overflow: hidden;
-}
-
-@keyframes dynamicHeader {
-    0% {
-        transform: skewX(-5deg);
-        border-radius: 0 0 20% 20%;
-    }
-    100% {
-        transform: skewX(5deg);
-        border-radius: 0 0 10% 10%;
-    }
-}
-
-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
-    animation: headerShine 3s linear infinite;
-    transform: rotate(-45deg);
-}
-
-@keyframes headerShine {
-    0% {
-        left: -100%;
-    }
-    100% {
-        left: 100%;
-    }
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    animation: textPulse 2s ease-in-out infinite alternate;
-}
-
-@keyframes textPulse {
-    0% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(1.05);
-    }
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-nav ul li a::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: white;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s ease;
-}
-
-nav ul li a:hover::before {
-    transform: scaleX(1);
-    transform-origin: left;
-}
-
-section {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    animation: floatingSection 3s ease-in-out infinite alternate;
-    transition: all 0.3s ease;
-    perspective: 1000px;
-}
-
-@keyframes floatingSection {
-    0% {
-        transform: translateY(0) rotate(0deg) rotateX(0deg);
-    }
-    100% {
-        transform: translateY(-10px) rotate(1deg) rotateX(2deg);
-    }
-}
-
-section:hover {
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-    transform: scale(1.02) rotateX(5deg);
-}
-
-button {
-    background-color: #2ecc71;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: bold;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: all 0.6s;
-}
-
-button:hover::after {
-    left: 100%;
-}
-
-button:hover {
-    background-color: #27ae60;
-    transform: scale(1.05) rotate(2deg);
-    box-shadow: 0 6px 8px rgba(0,0,0,0.2);
-}
-
-button:active {
-    transform: scale(0.95) rotate(-2deg);
-}
-
-@media (max-width: 600px) {
-    nav ul {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    nav ul li {
-        margin: 10px 0;
-    }
-    
-    section {
-        margin: 1rem;
-        padding: 1rem;
-    }
-}
-
-/* JavaScript Animation Styles */
-.section-hidden {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s ease-out;
-}
-
-.section-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-@keyframes titleAnimation {
-    0% { transform: scale(0.8) rotate(-5deg); opacity: 0; }
-    50% { transform: scale(1.1) rotate(2deg); }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
-}
-
-.title-animation {
-    animation: titleAnimation 1.2s ease-out;
-}
-
-@keyframes slideInRight {
-    0% { transform: translateX(-50px); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-}
-
-.slide-in-right {
-    animation: slideInRight 1s ease-out;
-}
-
-@keyframes pulseAnimation {
-    0% { transform: scale(0.95); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.pulse-animation {
-    animation: pulseAnimation 1.5s infinite alternate;
-}
-
-@keyframes bounceIn {
-    0% { transform: scale(0.3); opacity: 0; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-.bounce-in {
-    animation: bounceIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-@keyframes shakeAnimation {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
-
-.shake-animation {
-    animation: shakeAnimation 0.7s;
-}
-
-.link-hover {
-    transform: scale(1.1);
-    color: #ffeb3b;
-    transition: all 0.3s ease;
-}
-
-.button-click {
-    transform: scale(0.95);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    transition: all 0.2s ease;
-}
-
-body {
     font-family: 'Inter', 'Arial', sans-serif;
     background-color: #f4f7f9;
     line-height: 1.6;
@@ -329,12 +61,7 @@ section h2 {
     margin-bottom: 1rem;
     font-weight: 600;
     position: relative;
-    animation: titleUnderline 1.5s ease-in-out infinite alternate;
-}
-
-@keyframes titleUnderline {
-    0% { letter-spacing: normal; }
-    100% { letter-spacing: 1px; }
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4)
 }
 
 section p {
@@ -392,18 +119,24 @@ button:active {
 
 #info {
     border-left: 5px solid #e74c3c;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4) 
+
+
 }
 
 #estadisticas {
     border-left: 5px solid #2ecc71;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 #modulos {
     border-left: 5px solid #f39c12;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 #denuncias {
     border-left: 5px solid #9b59b6;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 @media (max-width: 768px) {
@@ -411,16 +144,6 @@ button:active {
         margin: 1rem;
         padding: 1.5rem;
     }
-}
-
-/* Additional Micro-interactions */
-.pulse-animation {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
 }
 
 .hover-lift {
@@ -454,6 +177,7 @@ button:active {
     letter-spacing: 1px;
     position: relative;
     overflow: hidden;
+    
 }
 
 #loginBtn::before, #registerBtn::before {
@@ -496,4 +220,112 @@ button:active {
         margin-top: 10px;
         margin-right: 0;
     }
+}
+
+/* Animaciones para las tarjetas y secciones */
+#info, #estadisticas, #modulos, #denuncias {
+    animation: slideIn 0.8s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación al pasar el mouse sobre los encabezados */
+section h2 {
+    transition: all 0.3s ease;
+}
+
+section h2:hover {
+    color: #1abc9c;
+    transform: scale(1.05);
+}
+
+/* Animación de desvanecimiento para párrafos */
+section p {
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Efecto de desvanecimiento para botones */
+button {
+    animation: fadeInButton 1s ease forwards;
+}
+
+@keyframes fadeInButton {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Efecto de rebote al hacer clic en el botón */
+button:active {
+    animation: bounce 0.3s ease-in-out;
+    
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Animación en los botones de inicio de sesión y registro */
+#loginBtn, #registerBtn {
+    animation: fadeInButton 1s ease-in-out;
+    
+}
+
+#loginBtn:hover, #registerBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto de desplazamiento suave para el login/register container */
+.login-register-container {
+    animation: slideInContainer 0.5s ease-out;
+}
+
+@keyframes slideInContainer {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Transición suave de hover para las tarjetas */
+section:hover {
+    transform: scale(1.03) translateZ(10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
