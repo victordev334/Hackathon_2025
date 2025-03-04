@@ -52,21 +52,10 @@ pip install -r requirements.txt
 pip install --upgrade pip
 ```
 
-## Actualizar versiones de librerias y paquetes instalables
-```shell
-sudo apt-get update
-```
-
-## Para este proyecto se usaran las librerias de [WEBPY](https://webpy.org/)
+## instalar para crear el bot de telegram (https://python-telegram-bot.org/)
 
 ```shell
-pip install web.py
-```
-
-## Para conexión a la base de datos de [supabase](https://supabase.com/)
-
-```shell
-pip install supabase
+pip install python-telegram-bot --upgrade
 ```
 
 # Crear archivos para la ejecución
