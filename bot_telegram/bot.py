@@ -1,6 +1,22 @@
+import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQueryHandler
-from key import api_key
+from dotenv import load_dotenv
+import os
+
+# Cargar el archivo .env
+load_dotenv()
+
+# Obtener el token desde el archivo .env
+API_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+# Configurar el logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+
+logger = logging.getLogger(__name__)
 
 # Función de inicio /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -27,13 +43,11 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await query.edit_message_text(text="La mejor forma de prevenir el grooming es educar a los niños sobre el peligro de compartir información personal en línea y fomentar el uso seguro de internet. ¿Quieres saber qué hacer si eres víctima?")
     elif query.data == 'victim_help':
         await query.edit_message_text(text="Si eres víctima de grooming, es importante hablar con un adulto de confianza o denunciarlo a las autoridades. ¿Necesitas ayuda para saber cómo hacerlo?")
-        
-        # También podrías agregar más botones para redirigir a recursos o a más preguntas.
 
 # Función principal
 def main() -> None:
     """Función principal para iniciar el bot"""
-    application = Application.builder().token("TU_BOT_TOKEN").build()
+    application = Application.builder().token(API_TOKEN).build()
 
     # Añadir manejadores de comandos
     application.add_handler(CommandHandler("start", start))
