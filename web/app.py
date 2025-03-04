@@ -1,10 +1,12 @@
 import web
 from controllers.login_controller import Login as LoginController
+from controllers.registro_controller import Registro as RegistroController
 
 
 urls = (
     '/', 'Index',
-    '/Login', LoginController
+    '/Login', LoginController,
+    '/Registro', RegistroController
 )
 
 app = web.application(urls, globals())

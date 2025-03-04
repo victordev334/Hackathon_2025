@@ -127,3 +127,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const loginBtn = document.getElementById("registerBtn");
+    if (loginBtn) {
+        loginBtn.addEventListener("click", function() {
+            window.location.href = "/Registro";
+        });
+    }
+});

@@ -33,9 +33,10 @@ document.getElementById('formularioRegistro').addEventListener('submit', functio
     const primerApellido = document.getElementById('primerApellido').value;
     const segundoApellido = document.getElementById('segundoApellido').value;
     const correo = document.getElementById('correo').value;
+    const password = document.getElementById('password').value; // Asegurar que se envía la contraseña
 
     // Validaciones básicas
-    if (!username || !nombre || !primerApellido || !correo) {
+    if (!username || !nombre || !primerApellido || !correo || !password) {
         mostrarNotificacion('Por favor, complete todos los campos obligatorios', 'error');
         return;
     }
@@ -53,15 +54,31 @@ document.getElementById('formularioRegistro').addEventListener('submit', functio
         nombre,
         primerApellido,
         segundoApellido,
-        correo
+        correo,
+        password
     };
 
-    // Simular envío de datos (reemplazar con lógica real de backend)
-    console.log('Datos de registro:', datosRegistro);
+    // Enviar los datos al backend con fetch()
+    fetch('/Registro', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datosRegistro)
+    })
+    .then(response => response.json()) // Convertir respuesta a JSON
+    .then(data => {
+        console.log('Respuesta del servidor:', data);
 
-    // Mostrar notificación de éxito
-    mostrarNotificacion(`¡Registro exitoso, bienvenido ${nombre}!`);
-
-    // Limpiar formulario
-    this.reset();
+        if (data.success) {
+            mostrarNotificacion(`¡Registro exitoso, bienvenido ${nombre}!`, 'success');
+            document.getElementById('formularioRegistro').reset(); // Limpiar formulario
+        } else {
+            mostrarNotificacion(data.error || 'Error al registrar el usuario.', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+        mostrarNotificacion('Hubo un problema al conectarse con el servidor.', 'error');
+    });
 });

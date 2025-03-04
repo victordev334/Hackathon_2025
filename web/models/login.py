@@ -1,6 +1,6 @@
 # models/usuario.py
 import psycopg2
-from .config import DATABASE_URL
+from config import DATABASE_URL
 
 class UsuarioModel:
     def __init__(self):

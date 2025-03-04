@@ -1,6 +1,6 @@
 # controllers/login.py
 import web
-from models.usuarios import UsuarioModel
+from models.login import UsuarioModel
 
 # Se asume que tus vistas se encuentran en la carpeta 'views'
 render = web.template.render('views', base='master')
