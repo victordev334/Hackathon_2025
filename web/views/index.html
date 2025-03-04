@@ -1,51 +1,44 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protección contra el Grooming</title>
-    <link rel="stylesheet" href="principal.css">
-</head>
-<body>
-    <header>
-        <h1>Protección contra el Grooming</h1>
-        <nav>
-            <ul>
-                <li><a href="#info">¿Qué es el grooming?</a></li>
-                <li><a href="#estadisticas">Estadísticas</a></li>
-                <li><a href="#modulos">Módulos de Aprendizaje</a></li>
-                <li><a href="#denuncias">Centros de Denuncia</a></li>
-            </ul>
-        </nav>
-    </header>
+<header class="bg-primary text-white text-center py-4">
+    <h1>Protección contra el Grooming</h1>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="#info">¿Qué es el grooming?</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#estadisticas">Estadísticas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#modulos">Módulos de Aprendizaje</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#denuncias">Centros de Denuncia</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
 
-    <div>
-        <button id="loginBtn" class="bg-white text-blue-600 px-4 py-2 rounded mr-2">Iniciar Sesión</button>
-        <button id="registerBtn" class="bg-white text-blue-600 px-4 py-2 rounded">Registrarse</button>
-    </div>
-    
-    <section id="info">
-        <h2>¿Qué es el Grooming y por qué es peligroso?</h2>
-        <p>El grooming es cuando un adulto engaña a un menor en internet con fines de abuso. Es importante reconocer las señales y protegerse.</p>
-    </section>
-    
-    <section id="estadisticas">
-        <h2>Estadísticas Impactantes</h2>
-        <p>Más del 60% de los menores han sido contactados por desconocidos en internet. Es crucial educarse sobre este peligro.</p>
-    </section>
-    
-    <section id="modulos">
-        <h2>Módulos de Aprendizaje</h2>
-        <button onclick="irAModulos()">Acceder a los Módulos</button>
-    </section>
-    
-    <section id="denuncias">
-        <h2>Centros de Denuncias</h2>
-        <p>Si sospechas de un caso de grooming, denuncia en los siguientes enlaces.</p>
-        <button onclick="denunciar()">Denunciar ahora</button>
-    </section>
+<div class="container text-center mt-4">
+    <button id="loginBtn" class="btn btn-primary me-2">Iniciar Sesión</button>
+    <button id="registerBtn" class="btn btn-success">Registrarse</button>
+</div>
 
+<section id="info" class="container mt-5">
+    <h2 class="text-center">¿Qué es el Grooming y por qué es peligroso?</h2>
+    <p>El grooming es cuando un adulto engaña a un menor en internet con fines de abuso. Es importante reconocer las señales y protegerse.</p>
+</section>
 
-    <script src="principal.js"></script>
-</body>
-</html>
+<section id="estadisticas" class="container mt-5 bg-light p-4 rounded">
+    <h2 class="text-center">Estadísticas Impactantes</h2>
+    <p>Más del 60% de los menores han sido contactados por desconocidos en internet. Es crucial educarse sobre este peligro.</p>
+</section>
+
+<section id="modulos" class="container mt-5 text-center">
+    <h2>Módulos de Aprendizaje</h2>
+    <button class="btn btn-info" onclick="irAModulos()">Acceder a los Módulos</button>
+</section>
+
+<section id="denuncias" class="container mt-5 text-center">
+    <h2>Centros de Denuncias</h2>
+    <p>Si sospechas de un caso de grooming, denuncia en los siguientes enlaces.</p>
+    <button class="btn btn-danger" onclick="denunciar()">Denunciar ahora</button>
+</section>
