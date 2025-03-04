@@ -1,8 +1,10 @@
 import web
+from controllers.login_controller import Login as LoginController
 
 
 urls = (
-    '/', 'Index'
+    '/', 'Index',
+    '/Login', LoginController
 )
 
 app = web.application(urls, globals())

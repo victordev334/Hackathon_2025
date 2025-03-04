@@ -118,3 +118,12 @@ if (confirmacion) {
     window.location.href = 'https://www.denuncias.gob';
 }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const loginBtn = document.getElementById("loginBtn");
+    if (loginBtn) {
+        loginBtn.addEventListener("click", function() {
+            window.location.href = "/Login";
+        });
+    }
+});
