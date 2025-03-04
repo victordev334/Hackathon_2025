@@ -61,6 +61,7 @@ section h2 {
     margin-bottom: 1rem;
     font-weight: 600;
     position: relative;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4)
 }
 
 section p {
@@ -118,18 +119,24 @@ button:active {
 
 #info {
     border-left: 5px solid #e74c3c;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4) 
+
+
 }
 
 #estadisticas {
     border-left: 5px solid #2ecc71;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 #modulos {
     border-left: 5px solid #f39c12;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 #denuncias {
     border-left: 5px solid #9b59b6;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 @media (max-width: 768px) {
@@ -170,6 +177,7 @@ button:active {
     letter-spacing: 1px;
     position: relative;
     overflow: hidden;
+    
 }
 
 #loginBtn::before, #registerBtn::before {
@@ -274,6 +282,7 @@ button {
 /* Efecto de rebote al hacer clic en el botón */
 button:active {
     animation: bounce 0.3s ease-in-out;
+    
 }
 
 @keyframes bounce {
@@ -291,6 +300,7 @@ button:active {
 /* Animación en los botones de inicio de sesión y registro */
 #loginBtn, #registerBtn {
     animation: fadeInButton 1s ease-in-out;
+    
 }
 
 #loginBtn:hover, #registerBtn:hover {
