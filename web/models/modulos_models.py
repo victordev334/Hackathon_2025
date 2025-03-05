@@ -1,4 +1,5 @@
 import psycopg2
+import json
 from config import DATABASE_URL
 
 class UsuarioModel:
@@ -17,65 +18,65 @@ class UsuarioModel:
             print("🔌 Conexión cerrada correctamente.")
 
     def obtener_modulos(self):
-        """
-        Obtiene la lista de módulos combinando los de la base de datos con los módulos estáticos.
-        """
-        modulos_estaticos = [
-            {'id_modulo': 1, 'titulo': 'Grooming: Conceptos Fundamentales', 'descripcion': 'Comprender el acoso sexual online en profundidad', 'emoji': '🕵️'},
-            {'id_modulo': 2, 'titulo': 'Psicología del Groomer', 'descripcion': 'Estrategias de manipulación y control emocional', 'emoji': '🎭'},
-            {'id_modulo': 3, 'titulo': 'Identificación de Riesgos', 'descripcion': 'Reconoce señales de peligro en entornos digitales', 'emoji': '🚨'},
-            {'id_modulo': 4, 'titulo': 'Estrategias de Protección', 'descripcion': 'Técnicas de prevención y defensa digital', 'emoji': '🛡️'},
-            {'id_modulo': 5, 'titulo': 'Seguridad en Redes Sociales', 'descripcion': 'Configuración de privacidad y gestión de contactos', 'emoji': '📱'},
-            {'id_modulo': 6, 'titulo': 'Marco Legal', 'descripcion': 'Leyes y consecuencias del grooming', 'emoji': '⚖️'}
-        ]
-
+        """Obtiene todos los módulos disponibles en la base de datos."""
         if not self.conn:
-            return modulos_estaticos  # Si la BD falla, devolver solo los estáticos
+            return []
 
         query = "SELECT id_modulo, titulo, descripcion FROM Modulos ORDER BY orden"
         try:
             with self.conn.cursor() as cur:
                 cur.execute(query)
-                modulos_db = cur.fetchall()
+                modulos = cur.fetchall()
 
-            modulos_bd_dicts = [{'id_modulo': m[0], 'titulo': m[1], 'descripcion': m[2], 'emoji': '📘'} for m in modulos_db]
-
-            titulos_en_bd = {m['titulo'] for m in modulos_bd_dicts}
-            modulos_final = modulos_bd_dicts + [m for m in modulos_estaticos if m['titulo'] not in titulos_en_bd]
-
-            return modulos_final
+            return [{'id_modulo': m[0], 'titulo': m[1], 'descripcion': m[2]} for m in modulos]
         except Exception as e:
             print("❌ Error obteniendo módulos:", e)
-            return modulos_estaticos
+            return []
 
     def obtener_detalle_modulo(self, modulo_id):
-        """
-        Obtiene los detalles de un módulo específico desde la base de datos o los estáticos.
-        """
-        detalles_estaticos = {
-            1: {'id_modulo': 1, 'titulo': 'Grooming: Conceptos Fundamentales', 'descripcion_detallada': 'Módulo introductorio...'},
-            2: {'id_modulo': 2, 'titulo': 'Psicología del Groomer', 'descripcion_detallada': 'Análisis de estrategias psicológicas...'},
-            3: {'id_modulo': 3, 'titulo': 'Identificación de Riesgos', 'descripcion_detallada': 'Reconocimiento de señales de peligro...'},
-            4: {'id_modulo': 4, 'titulo': 'Estrategias de Protección', 'descripcion_detallada': 'Técnicas y herramientas para prevenir...'},
-            5: {'id_modulo': 5, 'titulo': 'Seguridad en Redes Sociales', 'descripcion_detallada': 'Configuración de privacidad y seguridad...'},
-            6: {'id_modulo': 6, 'titulo': 'Marco Legal', 'descripcion_detallada': 'Aspectos legales sobre el grooming...'}
-        }
-
-        if modulo_id in detalles_estaticos:
-            return detalles_estaticos[modulo_id]
-
+        """Obtiene el detalle de un módulo y sus preguntas."""
         if not self.conn:
             return None
 
-        query = "SELECT id_modulo, titulo, descripcion FROM Modulos WHERE id_modulo = %s"
+        query_modulo = "SELECT id_modulo, titulo, descripcion_detallada FROM Modulos WHERE id_modulo = %s"
+        query_preguntas = "SELECT id_pregunta, texto_pregunta, opciones FROM Preguntas WHERE modulo_id = %s"
+
         try:
             with self.conn.cursor() as cur:
-                cur.execute(query, (modulo_id,))
+                # Obtener datos del módulo
+                cur.execute(query_modulo, (modulo_id,))
                 modulo = cur.fetchone()
-            
-            if modulo:
-                return {'id_modulo': modulo[0], 'titulo': modulo[1], 'descripcion_detallada': modulo[2]}
-            return None
+
+                # Si el módulo no existe, devolver None
+                if not modulo:
+                    return None
+
+                # Obtener preguntas del módulo
+                cur.execute(query_preguntas, (modulo_id,))
+                preguntas = cur.fetchall()
+
+            preguntas_list = []
+            for p in preguntas:
+                opciones = p[2]  # `opciones` ya es JSONB en PostgreSQL, lo traemos directamente
+                if isinstance(opciones, str):  # Si por alguna razón es string, lo convertimos
+                    try:
+                        opciones = json.loads(opciones)
+                    except json.JSONDecodeError:
+                        print(f"❌ Error al decodificar opciones para la pregunta {p[0]}")
+                        opciones = []
+
+                preguntas_list.append({
+                    'id_pregunta': p[0],
+                    'texto_pregunta': p[1],
+                    'opciones': opciones
+                })
+
+            return {
+                'id_modulo': modulo[0],
+                'titulo': modulo[1],
+                'descripcion_detallada': modulo[2],
+                'preguntas': preguntas_list
+            }
         except Exception as e:
             print("❌ Error obteniendo detalles del módulo:", e)
             return None
