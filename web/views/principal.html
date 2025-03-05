@@ -1,0 +1,144 @@
+$def with (modulos, estadisticas, recursos, denuncias_info, bot_features)
+
+<!-- Sección de cabecera común -->
+<nav class="navbar">
+    <div class="logo">Protección Digital</div>
+    <ul>
+        <li><a href="#modulos" id="modulos-link">Módulos</a></li>
+        <li><a href="#estadisticas" id="estadisticas-link">Estadísticas</a></li>
+        <li><a href="#denuncias" id="denuncias-link">Denuncias</a></li>
+        <li><a href="#recursos" id="recursos-link">Recursos</a></li>
+        <li><a href="#bot" id="bot-link">Bot Telegram</a></li>
+    </ul>
+</nav>
+
+<section id="inicio" class="hero">
+    <h1>Protección Digital: Tu Escudo Contra el Grooming</h1>
+    <p>Educación, prevención y apoyo contra el acoso en línea</p>
+    <div class="hero-buttons">
+        <a href="#modulos" class="btn btn-primary">Comenzar Aprendizaje</a>
+        <a href="#denuncias" class="btn btn-secondary">Necesito Ayuda</a>
+    </div>
+</section>
+
+<div id="modulos-full-screen" class="full-screen-content hidden">
+    <h1 style="text-align: center; margin-bottom: 30px;">📚 Módulos de Aprendizaje Avanzados</h1>
+    
+    <div class="modules-grid">
+        $for modulo in modulos:
+        <div class="module-card" data-module="${modulo.id}">
+            <h2>🕵️ ${modulo.nombre}</h2>
+            <p>${modulo.descripcion}</p>
+        </div>
+        </div>
+
+    <div id="module-details" class="module-details" style="max-width: 800px; margin: 20px auto;">
+        <h2 id="module-title">Selecciona un módulo para profundizar</h2>
+        <p id="module-description">Explora contenido detallado y recursos interactivos</p>
+    </div>
+
+    <button class="close-section-btn" id="close-modulos">Volver</button>
+</div>
+
+<div id="estadisticas-full-screen" class="full-screen-content hidden">
+    <h1 style="text-align: center; margin-bottom: 30px;">📊 Panorama Actual del Grooming</h1>
+    
+    <div class="estadisticas-grid">
+        $for estadistica in estadisticas:
+        <div class="estadistica-card">
+            <h2>${estadistica.valor}</h2>
+            <p>${estadistica.descripcion}</p>
+            <small>${estadistica.detalle}</small>
+        </div>
+        </div>
+
+    <button class="close-section-btn" id="close-estadisticas">Volver</button>
+</div>
+
+<div id="recursos-full-screen" class="full-screen-content hidden">
+    <h1 style="text-align: center; margin-bottom: 30px;">📖 Recursos Educativos</h1>
+    
+    <div class="recursos-grid">
+        $for recurso in recursos:
+        <div class="recurso-card">
+            <h2>${recurso.titulo}</h2>
+            <p>${recurso.descripcion}</p>
+            <a href="${recurso.link}" class="btn btn-download">${recurso.accion}</a>
+        </div>
+        </div>
+</div>
+
+<div id="denuncias-full-screen" class="full-screen-content hidden">
+    <h1 style="text-align: center; margin-bottom: 30px;">🚨 Centro de Denuncias</h1>
+    
+    <div class="denuncias-grid">
+        $for denuncia in denuncias_info:
+        <div class="denuncia-info">
+            <h2>${denuncia.titulo}</h2>
+            <ol>
+                $for paso in denuncia.pasos:
+                <li>${paso}</li>
+                </ol>
+        </div>
+        </div>
+
+        <div class="numeros-ayuda">
+            <h2>Números de Emergencia</h2>
+            <table>
+                <tr>
+                    <th>País</th>
+                    <th>Teléfono</th>
+                    <th>Institución</th>
+                </tr>
+                $for numero in denuncia.numeros:
+                <tr>
+                    <td>${numero.pais}</td>
+                    <td>${numero.telefono}</td>
+                    <td>${numero.institucion}</td>
+                </tr>
+                </for>
+            </table>
+        </div>
+
+    </div>
+
+    <button class="close-section-btn" id="close-denuncias">Volver</button>
+</div>
+
+<div id="bot-full-screen" class="full-screen-content hidden">
+    <h1 style="text-align: center; margin-bottom: 30px;">🤖 Bot de Telegram</h1>
+    
+    <div class="bot-container">
+        <h2>Asistente Virtual de Ciberseguridad</h2>
+        <p>Próximamente: Bot de Telegram para apoyo y orientación inmediata</p>
+        
+        <div class="bot-features">
+            <h3>Funcionalidades Principales:</h3>
+            <ul>
+                $for feature in bot_features:
+                <li>${feature.descripcion}</li>
+                </ul>
+        </div>
+
+        <div class="bot-cta">
+            <p>¡Próximamente disponible! Mantente atento a las actualizaciones.</p>
+            <a href="#" class="btn btn-primary">Notificarme cuando esté listo</a>
+        </div>
+    </div>
+
+    <button class="close-section-btn" id="close-bot">Volver</button>
+</div>
+
+<!-- Zona para el contenido dinámico -->
+<main>
+    @RenderBody() <!-- Este es el lugar donde se inyectará el contenido específico de cada vista -->
+</main>
+
+<!-- Sección de pie de página común -->
+<footer>
+    <p>&copy; 2025 Protección Digital. Todos los derechos reservados.</p>
+</footer>
+
+<!-- Archivos de script comunes -->
+<link rel="stylesheet" href="/static/css/principal1.css">
+<script src="/static/js/principal1.js"></script>
