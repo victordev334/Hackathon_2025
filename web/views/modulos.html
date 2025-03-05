@@ -1,15 +1,9 @@
 $def with (modulos)
 
 <div id="modulos-full-screen" class="full-screen-content">
-    <h1 style="text-align: center; margin-bottom: 30px;">📚 Módulos de Aprendizaje Avanzados</h1>
+    <h1 style="text-align: center; margin-bottom: 30px;">📚 Módulos de Aprendizaje</h1>
     
-    <div class="modules-grid">
-        $for modulo in modulos:
-            <div class="module-card" data-module="$modulo['id']">
-                <h2>$modulo:['emoji'] $modulo['titulo']</h2>
-                <p>$modulo:['descripcion']</p>
-            </div>
-    </div>
+    <div class="modules-grid"></div>
 
     <div id="module-details" class="module-details" style="max-width: 800px; margin: 20px auto;">
         <h2 id="module-title">Selecciona un módulo para profundizar</h2>

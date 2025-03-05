@@ -1,13 +1,14 @@
 import web
 from controllers.login_controller import Login as LoginController
 from controllers.registro_controller import Registro as RegistroController
-from controllers.modulos_controller import Modulos as ModulosController
+from controllers.modulos_controller import ModulosAPI as ModulosAPIController, ModulosVista as ModulosVistaController
 
 urls = (
     '/', 'Index',
     '/Login', LoginController,
     '/Registro', RegistroController,
-    '/Modulos', ModulosController,
+    '/Modulos', ModulosAPIController,  # API que devuelve JSON
+    '/ModulosVista', ModulosVistaController,  # Vista que muestra los módulos
 )
 
 app = web.application(urls, globals())

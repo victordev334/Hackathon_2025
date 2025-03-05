@@ -1,50 +1,41 @@
 import web
 import json
-from models.usuario_model import UsuarioModel
+from models.modulos_models import UsuarioModel
 
-class Modulos:
+class ModulosAPI:
+    """Clase para la API de módulos (devuelve JSON)"""
     def GET(self):
-        # Create an instance of UsuarioModel to access module methods
         usuario_model = UsuarioModel()
-        
-        # Fetch the list of modules
-        modulos = usuario_model.obtener_modulos()
-        
-        # Close the database connection
-        usuario_model.close_connection()
-        
-        # Render the modules view and pass the modules data
-        render = web.template.render('views', base='master')
-        return render.modulos(modulos)
+        try:
+            modulos = usuario_model.obtener_modulos()
+        finally:
+            usuario_model.close_connection()
+
+        web.header('Content-Type', 'application/json')
+        return json.dumps(modulos)
     
     def POST(self):
-        # Handle POST requests for module details
+        """Permite obtener detalles de un módulo específico"""
         usuario_model = UsuarioModel()
-        data = web.input()
-        
-        # Get module details based on module ID
-        module_id = int(data.get('modulo_id', 0))
-        module_details = usuario_model.obtener_detalle_modulo(module_id)
-        
-        usuario_model.close_connection()
-        
-        # Return module details as JSON
+        try:
+            data = json.loads(web.data().decode('utf-8'))
+            modulo_id = int(data.get('modulo_id', 0))
+            modulo_detalles = usuario_model.obtener_detalle_modulo(modulo_id)
+        finally:
+            usuario_model.close_connection()
+
         web.header('Content-Type', 'application/json')
-        return json.dumps(module_details)
-    
-    def PUT(self):
-        # Handle module progress tracking
+        return json.dumps(modulo_detalles)
+
+class ModulosVista:
+    """Clase para la vista de módulos (devuelve HTML)"""
+    def GET(self):
         usuario_model = UsuarioModel()
-        data = web.input()
-        
-        # Example of registering module progress
-        result = usuario_model.registrar_progreso_modulo(
-            usuario_id=data.get('usuario_id'),
-            modulo_id=data.get('modulo_id'),
-            porcentaje=data.get('porcentaje')
-        )
-        
-        usuario_model.close_connection()
-        
-        # Return a response indicating success or failure
-        return web.ok() if result else web.internalerror()
+        try:
+            modulos = usuario_model.obtener_modulos()
+        finally:
+            usuario_model.close_connection()
+
+        render = web.template.render('views', base='master')
+        return render.modulos(modulos)
+
