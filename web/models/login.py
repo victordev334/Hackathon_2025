@@ -13,7 +13,8 @@ class UsuarioModel:
 
     def login(self, username, password):
         """
-        Busca en la base de datos un usuario cuyo nombre coincida y la contraseña sea la indicada.
+        Busca en la base de datos un usuario cuyo nombre coincida
+        y la contraseña sea la indicada.
         """
         if not self.conn:
             print("❌ ERROR: No hay conexión a la base de datos.")
@@ -36,11 +37,10 @@ class UsuarioModel:
                 print("❌ Usuario no encontrado")
                 return None
 
-            # Comparar la contraseña (asegúrate de que la contraseña en la BD esté en texto plano o usa hashing)
             stored_password = user[2]
             if stored_password == password:
                 print(f"✅ Usuario autenticado correctamente: {user[1]}")
-                return user
+                return user  # Tupla (id_usuario, nombre_usuario, contraseña)
             else:
                 print("❌ Contraseña incorrecta")
                 return None

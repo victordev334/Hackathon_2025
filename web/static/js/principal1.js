@@ -8,15 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const completarBtn = document.getElementById('completar-modulo');
     const closeBtn = document.getElementById('close-modulos');
 
+    // Variable para almacenar el ID del módulo actualmente seleccionado
     let currentModuleId = null;
-    let userId = document.getElementById('user-id')?.value || 1;
 
-    // Cargar módulos desde la API
+    // 1. Cargar módulos desde la API (GET /Modulos)
     fetch('/Modulos')
         .then(response => response.json())
         .then(modulos => {
-            moduleGrid.innerHTML = '';
+            // Si el servidor envió un error por falta de sesión u otro motivo:
+            if (modulos.success === false && modulos.error) {
+                alert(`Error: ${modulos.error}`);
+                // Por ejemplo, redirigir al login si no hay sesión
+                // location.href = '/Login';
+                return;
+            }
 
+            // Renderizar la lista de módulos en la grid
+            moduleGrid.innerHTML = '';
             modulos.forEach(modulo => {
                 const moduleCard = document.createElement('div');
                 moduleCard.classList.add('module-card');
@@ -42,89 +50,90 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('❌ Error al cargar los módulos:', error));
 
-        function cargarModulo(moduloId) {
-            fetch("/Modulos", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ modulo_id: moduloId })
-            })
-            .then(response => response.json())
-            .then(modulo => {
-                if (!modulo || modulo.error) {
-                    console.error("⚠️ Error: No se pudo obtener el módulo. Respuesta del servidor:", modulo);
-                    alert("⚠️ No se encontró información para este módulo.");
+    // 2. Función para cargar el detalle de un módulo (POST /Modulos con {modulo_id})
+    function cargarModulo(moduloId) {
+        fetch("/Modulos", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ modulo_id: moduloId })
+        })
+        .then(response => response.json())
+        .then(modulo => {
+            if (!modulo || modulo.error) {
+                console.error("⚠️ Error: No se pudo obtener el módulo. Respuesta del servidor:", modulo);
+                alert("⚠️ No se encontró información para este módulo.");
+                return;
+            }
+
+            currentModuleId = modulo.id_modulo;
+            moduleTitle.textContent = modulo.titulo;
+            moduleDescription.textContent = modulo.descripcion_detallada || "Sin descripción disponible.";
+            questionsList.innerHTML = '';
+
+            if (modulo.preguntas && modulo.preguntas.length > 0) {
+                modulo.preguntas.forEach(pregunta => {
+                    const preguntaItem = document.createElement('li');
+                    preguntaItem.innerHTML = `
+                        <strong>${pregunta.texto_pregunta}</strong>
+                        <ul>
+                            ${pregunta.opciones.map(opcion => `
+                                <li class="opcion" data-correcto="${opcion.es_correcta}">${opcion.texto}</li>
+                            `).join('')}
+                        </ul>
+                    `;
+                    questionsList.appendChild(preguntaItem);
+                });
+            } else {
+                questionsList.innerHTML = "<p>Este módulo no tiene preguntas disponibles.</p>";
+            }
+
+            completarBtn.style.display = "block";
+            moduleDetails.style.display = "block";
+
+            asignarEventosRespuestas();
+        })
+        .catch(error => {
+            console.error("❌ Error al obtener detalles del módulo:", error);
+            alert("❌ Ocurrió un error al cargar el módulo. Inténtalo de nuevo.");
+        });
+    }
+
+    // 3. Función para asignar eventos a las respuestas de las preguntas
+    function asignarEventosRespuestas() {
+        document.querySelectorAll('.opcion').forEach(opcion => {
+            opcion.addEventListener('click', () => {
+                const preguntaContainer = opcion.closest('ul'); // Encuentra la lista de opciones de la pregunta
+
+                // Verificar si la pregunta ya fue respondida
+                if (preguntaContainer.classList.contains('respondido')) {
+                    alert("⚠️ Solo puedes seleccionar una respuesta por pregunta.");
                     return;
                 }
-        
-                currentModuleId = modulo.id_modulo;
-                moduleTitle.textContent = modulo.titulo;
-                moduleDescription.textContent = modulo.descripcion_detallada || "Sin descripción disponible.";
-                questionsList.innerHTML = '';
-        
-                if (modulo.preguntas && modulo.preguntas.length > 0) {
-                    modulo.preguntas.forEach(pregunta => {
-                        const preguntaItem = document.createElement('li');
-                        preguntaItem.innerHTML = `
-                            <strong>${pregunta.texto_pregunta}</strong>
-                            <ul>
-                                ${pregunta.opciones.map(opcion => `
-                                    <li class="opcion" data-correcto="${opcion.es_correcta}">${opcion.texto}</li>
-                                `).join('')}
-                            </ul>
-                        `;
-                        questionsList.appendChild(preguntaItem);
-                    });
-                } else {
-                    questionsList.innerHTML = "<p>Este módulo no tiene preguntas disponibles.</p>";
-                }
-        
-                completarBtn.style.display = "block";
-                moduleDetails.style.display = "block";
-        
-                asignarEventosRespuestas();
-            })
-            .catch(error => {
-                console.error("❌ Error al obtener detalles del módulo:", error);
-                alert("❌ Ocurrió un error al cargar el módulo. Inténtalo de nuevo.");
-            });
-        }
-        
 
-        function asignarEventosRespuestas() {
-            document.querySelectorAll('.opcion').forEach(opcion => {
-                opcion.addEventListener('click', () => {
-                    const preguntaContainer = opcion.closest('ul'); // Encuentra la lista de opciones de la pregunta
-        
-                    // Verificar si la pregunta ya fue respondida
-                    if (preguntaContainer.classList.contains('respondido')) {
-                        alert("⚠️ Solo puedes seleccionar una respuesta por pregunta.");
-                        return;
-                    }
-        
-                    // Marcar la respuesta seleccionada
-                    if (opcion.dataset.correcto === "true") {
-                        opcion.style.color = "green";
-                        opcion.style.fontWeight = "bold";
-                        alert("✅ Respuesta Correcta!");
-                    } else {
-                        opcion.style.color = "red";
-                        opcion.style.fontWeight = "bold";
-                        alert("❌ Respuesta Incorrecta");
-                    }
-        
-                    // Marcar la pregunta como respondida
-                    preguntaContainer.classList.add('respondido');
-        
-                    // Deshabilitar todas las opciones de la misma pregunta
-                    preguntaContainer.querySelectorAll('.opcion').forEach(op => {
-                        op.style.pointerEvents = "none"; // Evita más clics
-                        op.style.opacity = "0.6"; // Reduce la visibilidad de las opciones no seleccionadas
-                    });
+                // Marcar la respuesta seleccionada
+                if (opcion.dataset.correcto === "true") {
+                    opcion.style.color = "green";
+                    opcion.style.fontWeight = "bold";
+                    alert("✅ Respuesta Correcta!");
+                } else {
+                    opcion.style.color = "red";
+                    opcion.style.fontWeight = "bold";
+                    alert("❌ Respuesta Incorrecta");
+                }
+
+                // Marcar la pregunta como respondida
+                preguntaContainer.classList.add('respondido');
+
+                // Deshabilitar todas las opciones de la misma pregunta
+                preguntaContainer.querySelectorAll('.opcion').forEach(op => {
+                    op.style.pointerEvents = "none"; // Evita más clics
+                    op.style.opacity = "0.6";        // Reduce la visibilidad de las opciones no seleccionadas
                 });
             });
-        }
-        
+        });
+    }
 
+    // 4. Evento para completar el módulo (POST /Modulos con {modulo_id, complete: true})
     completarBtn.addEventListener('click', () => {
         if (!currentModuleId) {
             alert("⚠️ Selecciona un módulo primero.");
@@ -134,7 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/Modulos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ usuario_id: userId, modulo_id: currentModuleId })
+            body: JSON.stringify({
+                modulo_id: currentModuleId,
+                complete: true // indicamos que queremos "completar" el módulo
+            })
         })
         .then(response => response.json())
         .then(data => {
@@ -142,18 +154,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert("✅ ¡Módulo completado! Revisa tus logros.");
             } else {
                 alert("⚠️ Hubo un problema al completar el módulo.");
+                console.error("Detalle del problema:", data);
             }
         })
         .catch(error => console.error("❌ Error al completar módulo:", error));
     });
 
+    // 5. Botón para cerrar la vista de detalle
     closeBtn.addEventListener('click', () => {
         moduleDetails.style.display = 'none';
         moduleTitle.textContent = "Selecciona un módulo para profundizar";
         moduleDescription.textContent = "Explora contenido detallado y recursos interactivos";
     });
 
-    // Aplicar animaciones a los módulos al pasar el mouse
+    // -- Animaciones para las tarjetas de módulos (opcional) --
     function applyModuleAnimations() {
         const moduleCards = document.querySelectorAll('.module-card');
         moduleCards.forEach(card => {
@@ -162,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Configurar navegación entre secciones
+    // -- Configurar navegación entre secciones (si corresponde) --
     const sections = {
         'modulos': {
             link: document.getElementById('modulos-link'),

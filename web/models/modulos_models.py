@@ -1,3 +1,4 @@
+# models/modulos_models.py (o el nombre que prefieras)
 import psycopg2
 import json
 from config import DATABASE_URL
@@ -12,13 +13,12 @@ class UsuarioModel:
             self.conn = None
 
     def close_connection(self):
-        """Cierra la conexión con la base de datos"""
         if self.conn:
             self.conn.close()
             print("🔌 Conexión cerrada correctamente.")
 
     def obtener_modulos(self):
-        """Obtiene todos los módulos disponibles en la base de datos."""
+        """Obtiene todos los módulos disponibles."""
         if not self.conn:
             return []
 
@@ -27,8 +27,10 @@ class UsuarioModel:
             with self.conn.cursor() as cur:
                 cur.execute(query)
                 modulos = cur.fetchall()
-
-            return [{'id_modulo': m[0], 'titulo': m[1], 'descripcion': m[2]} for m in modulos]
+            return [
+                {'id_modulo': m[0], 'titulo': m[1], 'descripcion': m[2]}
+                for m in modulos
+            ]
         except Exception as e:
             print("❌ Error obteniendo módulos:", e)
             return []
@@ -38,8 +40,12 @@ class UsuarioModel:
         if not self.conn:
             return None
 
-        query_modulo = "SELECT id_modulo, titulo, descripcion_detallada FROM Modulos WHERE id_modulo = %s"
-        query_preguntas = "SELECT id_pregunta, texto_pregunta, opciones FROM Preguntas WHERE modulo_id = %s"
+        query_modulo = """SELECT id_modulo, titulo, descripcion_detallada
+                          FROM Modulos
+                          WHERE id_modulo = %s"""
+        query_preguntas = """SELECT id_pregunta, texto_pregunta, opciones
+                             FROM Preguntas
+                             WHERE modulo_id = %s"""
 
         try:
             with self.conn.cursor() as cur:
@@ -47,7 +53,6 @@ class UsuarioModel:
                 cur.execute(query_modulo, (modulo_id,))
                 modulo = cur.fetchone()
 
-                # Si el módulo no existe, devolver None
                 if not modulo:
                     return None
 
@@ -57,8 +62,9 @@ class UsuarioModel:
 
             preguntas_list = []
             for p in preguntas:
-                opciones = p[2]  # `opciones` ya es JSONB en PostgreSQL, lo traemos directamente
-                if isinstance(opciones, str):  # Si por alguna razón es string, lo convertimos
+                opciones = p[2]
+                # Verifica si 'opciones' es JSON en string
+                if isinstance(opciones, str):
                     try:
                         opciones = json.loads(opciones)
                     except json.JSONDecodeError:
@@ -80,3 +86,39 @@ class UsuarioModel:
         except Exception as e:
             print("❌ Error obteniendo detalles del módulo:", e)
             return None
+
+    def marcar_modulo_completado(self, user_id, modulo_id):
+        """Marca un módulo como completado para un usuario en la tabla Progreso_Usuarios."""
+        if not self.conn:
+            return False
+
+        # Podrías hacer un UPSERT, o primero verificar si existe un registro en Progreso_Usuarios
+        query_verificar = """
+            SELECT completado FROM Progreso_Usuarios
+            WHERE usuario_id = %s AND modulo_id = %s
+        """
+        query_insert = """
+            INSERT INTO Progreso_Usuarios (usuario_id, modulo_id, completado, fecha_completado)
+            VALUES (%s, %s, TRUE, NOW())
+        """
+        query_update = """
+            UPDATE Progreso_Usuarios
+            SET completado = TRUE, fecha_completado = NOW()
+            WHERE usuario_id = %s AND modulo_id = %s
+        """
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute(query_verificar, (user_id, modulo_id))
+                resultado = cur.fetchone()
+                if not resultado:
+                    # No existía el registro, lo insertamos
+                    cur.execute(query_insert, (user_id, modulo_id))
+                else:
+                    # Ya existe, lo actualizamos
+                    cur.execute(query_update, (user_id, modulo_id))
+            self.conn.commit()
+            print(f"✅ Módulo {modulo_id} marcado como completado para usuario {user_id}")
+            return True
+        except Exception as e:
+            print("❌ Error al marcar módulo completado:", e)
+            return False

@@ -29,56 +29,36 @@ document.addEventListener("DOMContentLoaded", function() {
     const loginForm = document.getElementById("formularioLogin");
 
     if (loginForm) {
-        loginForm.addEventListener("submit", function(e) {
-            e.preventDefault(); // Evita la recarga de la página
-            
-            // Recoger los valores del formulario
-            const username = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value.trim();
+        loginForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // Evitar recarga de la página
 
-            // Validaciones básicas
-            if (!username || !password) {
-                mostrarNotificacion("Por favor, complete todos los campos", "error");
-                return;
-            }
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
 
-            // Datos a enviar
-            const datosLogin = {
-                username: username,
-                password: password
-            };
-
-            console.log("📡 Enviando datos al servidor:", datosLogin);
-
-            // Enviar datos al backend con fetch()
             fetch("/Login", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(datosLogin)
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
             })
             .then(response => response.json())
             .then(data => {
-                console.log("📡 Respuesta del servidor:", data);
-
                 if (data.success) {
-                    mostrarNotificacion(`¡Bienvenido, ${data.user}!`, "success");
-                    
-                    // Redirigir al usuario después de 2 segundos
-                    setTimeout(() => {
-                        window.location.href = "/ModulosVista";
-                    }, 2000);
+                    alert(`✅ ¡Bienvenido, ${data.user_name}!`);
+
+                    // Guardamos el nombre y ID en el localStorage (opcional)
+                    localStorage.setItem("user_id", data.user_id);
+                    localStorage.setItem("user_name", data.user_name);
+
+                    // Redirigir a la vista de módulos
+                    window.location.href = "/ModulosVista";
                 } else {
-                    mostrarNotificacion(data.error || "Credenciales incorrectas", "error");
+                    alert("❌ " + data.error);
                 }
             })
-            .catch(error => {
-                console.error("❌ Error en la solicitud:", error);
-                mostrarNotificacion("Error al conectarse con el servidor", "error");
-            });
+            .catch(error => console.error("❌ Error en login:", error));
         });
     }
+
 
 
     // Manejadores de eventos para los enlaces adicionales
