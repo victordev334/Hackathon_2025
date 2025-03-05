@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                     // Redirigir al usuario después de 2 segundos
                     setTimeout(() => {
-                        window.location.href = "/principal";
+                        window.location.href = "/modulos";
                     }, 2000);
                 } else {
                     mostrarNotificacion(data.error || "Credenciales incorrectas", "error");

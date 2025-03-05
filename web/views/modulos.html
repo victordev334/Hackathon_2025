@@ -1,0 +1,23 @@
+$def with (modulos)
+
+<div id="modulos-full-screen" class="full-screen-content">
+    <h1 style="text-align: center; margin-bottom: 30px;">📚 Módulos de Aprendizaje Avanzados</h1>
+    
+    <div class="modules-grid">
+        $for modulo in modulos:
+            <div class="module-card" data-module="$modulo['id']">
+                <h2>$modulo:['emoji'] $modulo['titulo']</h2>
+                <p>$modulo:['descripcion']</p>
+            </div>
+    </div>
+
+    <div id="module-details" class="module-details" style="max-width: 800px; margin: 20px auto;">
+        <h2 id="module-title">Selecciona un módulo para profundizar</h2>
+        <p id="module-description">Explora contenido detallado y recursos interactivos</p>
+    </div>
+
+    <button class="close-section-btn" id="close-modulos">Volver</button>
+</div>
+
+<link rel="stylesheet" href="/static/css/principal1.css">
+<script src="/static/js/principal1.js"></script>

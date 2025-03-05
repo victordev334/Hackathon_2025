@@ -26,7 +26,12 @@ class Login:
             else:
                 print("❌ Credenciales incorrectas")
                 return json.dumps({"success": False, "error": "Credenciales incorrectas"})
+                
 
         except Exception as e:
             print("❌ ERROR en login:", str(e))
             return json.dumps({"success": False, "error": "Error en el servidor"})
+        
+    class Principal1:
+        def GET(self):
+            return web.template.render('views', base='master').modulos()
