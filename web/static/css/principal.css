@@ -52,6 +52,7 @@ section:hover {
         rotateX(3deg) 
         translateZ(15px);
     box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    
 }
 
 section h2 {
@@ -119,10 +120,9 @@ button:active {
 
 #info {
     border-left: 5px solid #e74c3c;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4) 
-
-
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
+
 
 #estadisticas {
     border-left: 5px solid #2ecc71;
@@ -178,6 +178,7 @@ button:active {
     position: relative;
     overflow: hidden;
     
+    
 }
 
 #loginBtn::before, #registerBtn::before {
@@ -225,6 +226,7 @@ button:active {
 /* Animaciones para las tarjetas y secciones */
 #info, #estadisticas, #modulos, #denuncias {
     animation: slideIn 0.8s ease-out;
+    
 }
 
 @keyframes slideIn {
@@ -241,6 +243,7 @@ button:active {
 /* Animación al pasar el mouse sobre los encabezados */
 section h2 {
     transition: all 0.3s ease;
+    
 }
 
 section h2:hover {
@@ -324,8 +327,8 @@ button:active {
     }
 }
 
-/* Transición suave de hover para las tarjetas */
-section:hover {
-    transform: scale(1.03) translateZ(10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+.line-separator {
+    border: 0;
+    border-top: 2px solid #ccc; /* Línea de 2px, gris */
+    margin: 100px 0; /* Espacio arriba y abajo de la línea */
 }

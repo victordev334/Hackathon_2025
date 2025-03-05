@@ -1,13 +1,12 @@
 import web
 from controllers.login_controller import Login as LoginController
 from controllers.registro_controller import Registro as RegistroController
-from controllers.principal_controller import Principal as PrincipalController  # Importamos el controlador de principal
+
 
 urls = (
     '/', 'Index',
     '/Login', LoginController,
-    '/Registro', RegistroController,
-    '/Principal', PrincipalController  # Agregamos la URL para el controlador de principal
+    '/Registro', RegistroController, 
 )
 
 app = web.application(urls, globals())
