@@ -90,21 +90,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
 
-    function asignarEventosRespuestas() {
-        document.querySelectorAll('.opcion').forEach(opcion => {
-            opcion.addEventListener('click', () => {
-                if (opcion.dataset.correcto === "true") {
-                    opcion.style.color = "green";
-                    opcion.style.fontWeight = "bold";
-                    alert("✅ Respuesta Correcta!");
-                } else {
-                    opcion.style.color = "red";
-                    opcion.style.fontWeight = "bold";
-                    alert("❌ Respuesta Incorrecta");
-                }
+        function asignarEventosRespuestas() {
+            document.querySelectorAll('.opcion').forEach(opcion => {
+                opcion.addEventListener('click', () => {
+                    const preguntaContainer = opcion.closest('ul'); // Encuentra la lista de opciones de la pregunta
+        
+                    // Verificar si la pregunta ya fue respondida
+                    if (preguntaContainer.classList.contains('respondido')) {
+                        alert("⚠️ Solo puedes seleccionar una respuesta por pregunta.");
+                        return;
+                    }
+        
+                    // Marcar la respuesta seleccionada
+                    if (opcion.dataset.correcto === "true") {
+                        opcion.style.color = "green";
+                        opcion.style.fontWeight = "bold";
+                        alert("✅ Respuesta Correcta!");
+                    } else {
+                        opcion.style.color = "red";
+                        opcion.style.fontWeight = "bold";
+                        alert("❌ Respuesta Incorrecta");
+                    }
+        
+                    // Marcar la pregunta como respondida
+                    preguntaContainer.classList.add('respondido');
+        
+                    // Deshabilitar todas las opciones de la misma pregunta
+                    preguntaContainer.querySelectorAll('.opcion').forEach(op => {
+                        op.style.pointerEvents = "none"; // Evita más clics
+                        op.style.opacity = "0.6"; // Reduce la visibilidad de las opciones no seleccionadas
+                    });
+                });
             });
-        });
-    }
+        }
+        
 
     completarBtn.addEventListener('click', () => {
         if (!currentModuleId) {
